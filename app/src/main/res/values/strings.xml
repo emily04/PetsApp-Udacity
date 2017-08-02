@@ -14,6 +14,9 @@
     <!-- Name for the application [CHAR LIMIT=12] -->
     <string name="app_name">Pets</string>
 
+    <!-- Label for button that starts AndroidDatabaseManager activity -->
+    <string name="view_data">View the data</string>
+
     <!-- Label for overflow menu option that inserts fake pet data into the app [CHAR LIMIT=20] -->
     <string name="action_insert_dummy_data">Insert Dummy Data</string>
 

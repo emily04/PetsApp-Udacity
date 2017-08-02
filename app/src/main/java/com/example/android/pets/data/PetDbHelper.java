@@ -1,11 +1,17 @@
 package com.example.android.pets.data;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.android.pets.data.PetContract;
 import com.example.android.pets.data.PetContract.PetEntry;
+
+import java.util.ArrayList;
 
 
 /**
@@ -40,4 +46,56 @@ public class PetDbHelper extends SQLiteOpenHelper {
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion){
     }
+
+
+    /*........................ CODE FOR DATABASE MANAGER IS BELOW ........................*/
+
+
+public ArrayList<Cursor> getData(String Query){
+    //get writable database
+    SQLiteDatabase sqlDB = this.getWritableDatabase();
+    String[] columns = new String[] { "message "};
+
+    //an arraylist of cursor to save two cursors has results from the query
+    //other cursor stores error message if any errors are triggered
+    ArrayList<Cursor> alc = new ArrayList<Cursor>(2);
+    MatrixCursor Cursor2 = new MatrixCursor(columns);
+    alc.add(null);
+    alc.add(null);
+
+    try{
+        String maxQuery = Query;
+        //execute the query results will be saved in Cursor c
+        Cursor c = sqlDB.rawQuery(maxQuery, null);
+
+        //add value to cursor 2
+        Cursor2.addRow(new Object[] { "Success" });
+
+        alc.set(1,Cursor2);
+        if (null != c && c.getCount() > 0){
+            alc.set(0,c);
+            c.moveToFirst();
+
+            return alc;
+        }
+        return alc;
+    } catch(SQLException sqlEx){
+        Log.d("Printing exception", sqlEx.getMessage());
+        //if any exceptions are triggered save the error message to cursor and return the arraylist
+        Cursor2.addRow(new Object[] { "" + sqlEx.getMessage() });
+        alc.set(1,Cursor2);
+        return alc;
+    } catch(Exception ex){
+        Log.d("Printing exception", ex.getMessage());
+
+        //if any exceptions are triggered save the error message to cursor and return the arraylist
+        Cursor2.addRow(new Object[] { "" + ex.getMessage() });
+        alc.set(1,Cursor2);
+        return alc;
+    }
+}
+
+
+    /*..................................................................................*/
+
 }

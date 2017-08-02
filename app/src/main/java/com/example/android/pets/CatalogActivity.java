@@ -11,11 +11,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.android.pets.data.AndroidDatabaseManager;
 import com.example.android.pets.data.PetContract.PetEntry;
 import com.example.android.pets.data.PetDbHelper;
 
+import static android.R.attr.button;
 import static android.R.attr.name;
 
 
@@ -36,13 +39,27 @@ public class CatalogActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CatalogActivity.thigit statusqqs, EditorActivity.class);
+                Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
                 startActivity(intent);
             }
         });
 
         mDbHelper = new PetDbHelper(this);
         displayDatabaseInfo();
+
+
+/*...........................BUTTON TO TRIGGER DB.................................................*/
+        Button dataButton = (Button) findViewById(R.id.view_data_button);
+        dataButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent dbmanager = new Intent(CatalogActivity.this, AndroidDatabaseManager.class);
+                startActivity(dbmanager);
+            }
+        });
+/*..................................................................................*/
+
+
     }
 
     /**
@@ -113,4 +130,6 @@ public class CatalogActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }
